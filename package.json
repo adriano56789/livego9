@@ -12,8 +12,10 @@
   "dependencies": {
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",
+    "mercadopago": "^2.11.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.6.0",
     "socket.io-client": "^4.8.3",
     "tailwind-merge": "^2.5.5"
   },
