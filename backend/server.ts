@@ -39,8 +39,8 @@ app.use((req, res, next) => {
 });
 
 // 2. Definir servidor e IO com base no ambiente
-let server: http.Server | https.Server;
-let io: Server;
+let server: http.Server | https.Server = http.createServer(app);
+let io: Server = new Server(server, { cors: { origin: "*" }, transports: ['websocket'] });
 
 if (isProduction) {
     console.log('🚀 MODO PRODUÇÃO ATIVADO. TENTANDO INICIAR SERVIDOR SEGURO...');
@@ -70,8 +70,7 @@ if (isProduction) {
     }
 } else {
     // --- DEVELOPMENT (HTTP + WS) ---
-    server = http.createServer(app);
-    io = new Server(server, { cors: { origin: "*" }, transports: ['websocket'] });
+    // Server and io already initialized with HTTP defaults
 }
 
 // 3. Injetar IO e configurar WebSocket
