@@ -74,8 +74,7 @@ export const srsController = {
     getClients: (req: Request, res: Response) => {
         sendSuccess(res, { clients: mockSrsData.clients });
     },
-    // Fix: Changed req type to any to resolve property 'params' does not exist error on line 77
-    getClientById: (req: any, res: Response) => {
+    getClientById(req: Request, res: Response) {
         const client = mockSrsData.clients.find(c => c.id === req.params.id);
         if (client) {
             sendSuccess(res, { client });
@@ -86,8 +85,7 @@ export const srsController = {
     getStreams: (req: Request, res: Response) => {
         sendSuccess(res, { streams: mockSrsData.streams });
     },
-    // Fix: Changed req type to any to resolve property 'params' does not exist error on line 88
-    getStreamById: (req: any, res: Response) => {
+    getStreamById(req: Request, res: Response) {
         const stream = mockSrsData.streams.find(s => s.id === req.params.id);
         if (stream) {
             sendSuccess(res, { stream });
@@ -95,16 +93,14 @@ export const srsController = {
             sendError(res, 'Stream not found', 404);
         }
     },
-    // Fix: Changed req type to any to resolve property 'params' does not exist error on line 96
-    deleteStreamById: (req: any, res: Response) => {
+    deleteStreamById(req: Request, res: Response) {
         sendSuccess(res, { code: 0, message: `Stream ${req.params.id} kicked off.` });
     },
     getConnections: (req: Request, res: Response) => {
         // Similar to clients for this mock
         sendSuccess(res, { conns: mockSrsData.clients });
     },
-    // Fix: Changed req type to any to resolve property 'params' does not exist error on line 104
-    getConnectionById: (req: any, res: Response) => {
+    getConnectionById(req: Request, res: Response) {
         // Similar to clients for this mock
         const conn = mockSrsData.clients.find(c => c.id === req.params.id);
         if (conn) {
@@ -113,8 +109,7 @@ export const srsController = {
             sendError(res, 'Connection not found', 404);
         }
     },
-    // Fix: Changed req type to any to resolve property 'params' does not exist error on line 112
-    deleteConnectionById: (req: any, res: Response) => {
+    deleteConnectionById(req: Request, res: Response) {
         sendSuccess(res, { code: 0, message: `Connection ${req.params.id} kicked off.` });
     },
     getConfigs: (req: Request, res: Response) => {
@@ -126,8 +121,7 @@ export const srsController = {
     getVhosts: (req: Request, res: Response) => {
         sendSuccess(res, { vhosts: [{ name: '__defaultVhost__', enabled: true }] });
     },
-    // Fix: Changed req type to any to resolve property 'params' does not exist error on line 124
-    getVhostById: (req: any, res: Response) => {
+    getVhostById(req: Request, res: Response) {
         if (req.params.id === '__defaultVhost__') {
             sendSuccess(res, { vhost: { name: '__defaultVhost__', enabled: true } });
         } else {
