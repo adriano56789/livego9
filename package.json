@@ -10,13 +10,16 @@
     "start": "nodemon -x \"ts-node\" server.ts"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "lucide-react": "^0.468.0",
-    "clsx": "^2.1.1",
+    "socket.io-client": "^4.8.3",
     "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",

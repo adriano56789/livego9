@@ -5,10 +5,18 @@
 
 # Build
 /dist
+/dist-*
 /dist-ssr
 /build
 /.next
 /out
+
+# Ignorar pastas dist em qualquer subdiretório
+**/dist/
+**/dist-ssr/
+**/build/
+**/.next/
+**/out/
 
 # Configurações locais
 .env
