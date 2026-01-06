@@ -60,7 +60,13 @@ const BeautyEffectsPanel: React.FC<BeautyEffectsPanelProps> = ({ onClose, addToa
     
     const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!selectedEffect) return;
-        setValues(prev => ({ ...prev, [selectedEffect]: parseInt(e.target.value) }));
+        const target = e.target as HTMLInputElement;
+        const value = target.value;
+        const numValue = parseInt(value, 10);
+        
+        if (!isNaN(numValue)) {
+            setValues(prev => ({ ...prev, [selectedEffect]: numValue }));
+        }
     };
 
     const handleTabClick = async (tabId: string) => {
