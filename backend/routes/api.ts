@@ -34,6 +34,8 @@ router.post('/users/:userId/frame', authMiddleware as any, userController.follow
 
 // Chat
 router.get('/chats/conversations', authMiddleware as any, chatController.getConversations);
+router.post('/chats/start', authMiddleware as any, chatController.startChat);
+router.get('/chats/friends', authMiddleware as any, chatController.getFriends);
 router.post('/chats/stream/:roomId/message', authMiddleware as any, chatController.sendMessageToStream);
 router.get('/ranking/fans', authMiddleware as any, chatController.getRanking);
 
@@ -54,7 +56,10 @@ router.post('/streams/:streamId/gift', authMiddleware as any, giftController.sen
 router.get('/live/:category', authMiddleware as any, streamController.listByCategory);
 router.post('/streams', authMiddleware as any, streamController.create);
 
-// Notificações - Rota de teste mantida desativada
-// router.post('/notifications/test', authMiddleware as any, notificationController.sendTestNotification);
+// Notificações
+router.post('/notifications/test', authMiddleware as any, notificationController.sendTestNotification);
+router.get('/notifications', authMiddleware as any, notificationController.getUserNotifications);
+router.put('/notifications/:id/read', authMiddleware as any, notificationController.markAsRead);
+router.delete('/notifications/:id', authMiddleware as any, notificationController.deleteNotification);
 
 export default router;

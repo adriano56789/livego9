@@ -1,9 +1,30 @@
+import { Document, Schema, model } from 'mongoose';
 
-import mongoose from 'mongoose';
+export interface IStreamer {
+    id?: string;
+    streamer_id: string;
+    hostId: string;
+    name: string;
+    avatar?: string;
+    thumbnail?: string;
+    category?: string;
+    viewers?: number;
+    location?: string;
+    isPrivate?: boolean;
+    quality?: string;
+    tags?: string[];
+    createdAt?: Date;
+    updatedAt?: Date;
+}
 
-const StreamerSchema = new mongoose.Schema({
+export interface IStreamerDocument extends Omit<IStreamer, 'id'>, Document {
+    _id: any;
+    __v?: number;
+}
+
+const StreamerSchema = new Schema<IStreamerDocument>({
     id: { type: String, required: true, unique: true },
-    streamer_id: { type: String, required: true, index: true }, // Adicionado para satisfazer a validação do banco na VPS
+    streamer_id: { type: String, required: true, index: true },
     hostId: { type: String, required: true, index: true },
     name: { type: String, required: true },
     avatar: String,
@@ -18,11 +39,13 @@ const StreamerSchema = new mongoose.Schema({
     timestamps: true,
     toJSON: {
         transform: function(doc, ret) {
-            delete ret._id;
-            delete ret.__v;
-            return ret;
+            const { _id, __v, ...rest } = ret;
+            return {
+                id: _id.toString(),
+                ...rest
+            };
         }
     }
 });
 
-export const StreamerModel = mongoose.model('Streamer', StreamerSchema);
+export const StreamerModel = model<IStreamerDocument>('Streamer', StreamerSchema);

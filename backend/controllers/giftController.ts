@@ -3,7 +3,6 @@ import { UserModel } from '../models/User';
 import { TransactionModel } from '../models/Transaction';
 import { AuthRequest } from '../middleware/auth';
 import { sendSuccess, sendError } from '../utils/response';
-import { messaging } from '../services/firebaseAdmin';
 
 export const giftController = {
     getAll: async (req: any, res: any, next: any) => {
@@ -69,32 +68,9 @@ export const giftController = {
                 (req as any).io.to(streamId).emit('newStreamGift', giftPayload);
             }
 
-            // Envia notificação push para o recebedor do presente
-            if (receiver && (receiver as any).fcmTokens && (receiver as any).fcmTokens.length > 0) {
-                const tokens = (receiver as any).fcmTokens;
-                const message = {
-                    notification: {
-                        title: 'Você recebeu um presente! 🎁',
-                        body: `${(sender as any).name} te enviou ${amount}x ${(gift as any).name}!`,
-                    },
-                    tokens: tokens,
-                };
-                
-                messaging.sendEachForMulticast(message).then(response => {
-                    console.log('FCM gift notification sent:', response);
-                    if (response.failureCount > 0) {
-                        const failedTokens: string[] = [];
-                        response.responses.forEach((resp, idx) => {
-                          if (!resp.success) {
-                            failedTokens.push(tokens[idx]);
-                          }
-                        });
-                        console.log('Tokens que falharam na notificação de presente: ' + failedTokens);
-                        UserModel.updateOne({ id: toUserId }, { $pullAll: { fcmTokens: failedTokens } }).catch(err => console.error("Falha ao limpar tokens FCM inválidos", err));
-                    }
-                }).catch(error => {
-                    console.error('Erro ao enviar notificação de presente via FCM:', error);
-                });
+            // Notificação de presente enviada via WebSocket
+            if (receiver) {
+                console.log(`Presente enviado de ${(sender as any).name} para ${(receiver as any).name}: ${amount}x ${(gift as any).name}`);
             }
 
             return sendSuccess(res, updatedSender, "Presente enviado com sucesso.");

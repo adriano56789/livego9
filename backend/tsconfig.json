@@ -9,7 +9,14 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "types": ["node", "express", "mongoose"],
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]
