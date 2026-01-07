@@ -91,7 +91,7 @@ app.get('/', (req, res) => {
 app.use(globalErrorHandler as any);
 
 // 6. Iniciar Servidor Principal
-const listenPort = isProduction ? config.https_port : config.port;
+const listenPort = (isProduction && config.https_port) ? config.https_port : config.port;
 server.listen(listenPort, '0.0.0.0', () => {
     if (isProduction) {
         console.log(`

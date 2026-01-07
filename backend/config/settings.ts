@@ -16,8 +16,9 @@ export interface Config {
     mongoDbName: string;
     
     // JWT Authentication
-    jwtSecret?: string;
+    jwtSecret: string;
     jwtExpiresIn: string;
+    https_port?: number;
     
     // Security Settings
     rateLimitWindowMs: number;
@@ -50,8 +51,8 @@ export const config: Config = {
     mongoDbName: process.env.MONGODB_NAME || 'livego',
     
     // JWT Authentication
-    jwtSecret: process.env.JWT_SECRET,
-    jwtExpiresIn: process.env.JWT_EXPIRES_IN || '1h',
+    jwtSecret: process.env.JWT_SECRET || '13758fdbfb1787812ba6a4bbc797a61f8f519cd251cf8cae1ce217a5c2014b866c20bc3e0d1b9e62c41f6ce730087d16b37591facdbd4cba4dfb0a1ef4012b9a',
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
     
     // Security Settings
     rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes

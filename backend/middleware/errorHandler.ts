@@ -1,33 +1,35 @@
-
 import { Request, Response, NextFunction } from 'express';
-import { sendError } from '../utils/response';
 
-/**
- * Middleware Global de Erros
- * Intercepta qualquer erro lançado na API e formata para o Frontend.
- */
-// Fix: Changed req and res to any to resolve issues where standard properties like method and path were not recognized.
-export const globalErrorHandler = (err: any, req: any, res: any, next: NextFunction) => {
-    console.error(`[REST_API_EXCEPTION] ${req.method} ${req.path}:`, err);
+interface ErrorWithStatus extends Error {
+    status?: number;
+    statusCode?: number;
+}
 
-    // Erros específicos de Mongoose (Banco de Dados)
-    if (err.name === 'ValidationError') {
-        return sendError(res, 'Falha de validação nos dados enviados.', 400, err.errors);
-    }
+export const globalErrorHandler = (
+    err: ErrorWithStatus, 
+    req: Request, 
+    res: Response, 
+    next: NextFunction
+) => {
+    const statusCode = err.statusCode || err.status || 500;
+    
+    console.error('Error:', {
+        message: err.message,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+        path: req.path,
+        method: req.method
+    });
 
-    if (err.name === 'CastError') {
-        return sendError(res, 'ID de recurso inválido ou mal formatado.', 400);
-    }
+    res.status(statusCode).json({
+        status: 'error',
+        statusCode,
+        message: err.message || 'Internal Server Error',
+        ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    });
+};
 
-    if (err.code === 11000) {
-        return sendError(res, 'Dado duplicado detectado (E-mail ou ID já existe).', 409);
-    }
-
-    // Erro de Autenticação JWT
-    if (err.name === 'JsonWebTokenError') {
-        return sendError(res, 'Token de segurança inválido.', 401);
-    }
-
-    // Erro Genérico
-    return sendError(res, err.message || 'Erro inesperado na intermediação de dados.', err.status || 500);
+export const notFoundHandler = (req: Request, res: Response, next: NextFunction) => {
+    const error = new Error(`Not Found - ${req.originalUrl}`);
+    (error as any).status = 404;
+    next(error);
 };
