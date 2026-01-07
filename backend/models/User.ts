@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-import { DocumentType, ResponseType } from '../types/mongoose';
+import { DocumentType, ResponseType } from '../types/mongoose.d.ts';
 
 declare global {
   namespace Express {
