@@ -20,6 +20,7 @@
   },
   "include": [
     "**/*.ts",
+    "../types/**/*.ts",
     "../types.ts",
     "../constants.ts",
     "../components/**/*.ts",

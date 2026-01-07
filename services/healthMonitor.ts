@@ -1,9 +1,10 @@
 
 import { apiTrackerService } from './apiTrackerService';
 
-export type ConnectivityStatus = 'connected' | 'disconnected' | 'reconnecting' | 'scanning';
+// Types
+type ConnectivityStatus = 'connected' | 'disconnected' | 'reconnecting' | 'scanning';
 
-export interface HealthIncident {
+interface HealthIncident {
     time: string;
     status: ConnectivityStatus;
     latency: number;
@@ -12,7 +13,7 @@ export interface HealthIncident {
     isViolation?: boolean;
 }
 
-export interface ApiStatus {
+interface ApiStatus {
     name: string;
     endpoint: string;
     status: 'online' | 'offline' | 'error';
@@ -164,3 +165,6 @@ class HealthMonitorService {
 }
 
 export const healthMonitor = new HealthMonitorService();
+
+// Export types
+export type { HealthIncident, ConnectivityStatus, ApiStatus };

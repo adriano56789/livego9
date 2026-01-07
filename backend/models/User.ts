@@ -38,6 +38,16 @@ export interface IUser {
     expiry?: string;
   };
   fcmTokens: string[];
+  // Admin wallet fields
+  isAdmin?: boolean;
+  platformEarnings?: number;
+  withdrawal_method?: {
+    type: 'pix' | 'bank_transfer' | 'email';
+    details: Record<string, any>;
+    isVerified: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 }
 
 export type UserDocument = DocumentType<IUser>;
@@ -73,7 +83,19 @@ const UserSchema = new mongoose.Schema({
     brand: String,
     expiry: String
   },
-  fcmTokens: { type: [String], default: [] }
+  fcmTokens: { type: [String], default: [] },
+  isAdmin: { type: Boolean, default: false },
+  platformEarnings: { type: Number, default: 0 },
+  withdrawal_method: {
+    type: {
+      type: String,
+      enum: ['pix', 'bank_transfer', 'email'],
+    },
+    details: { type: Schema.Types.Mixed, default: {} },
+    isVerified: { type: Boolean, default: false },
+    createdAt: { type: Date },
+    updatedAt: { type: Date }
+  }
 }, { 
   timestamps: true,
   toJSON: {

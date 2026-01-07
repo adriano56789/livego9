@@ -10,6 +10,7 @@ import { authMiddleware } from '../middleware/auth';
 import { sendSuccess } from '../utils/response';
 import { dbController } from '../controllers/dbController';
 import { notificationController } from '../controllers/notificationController';
+import { categoryController } from '../controllers/categoryController';
 
 const router = Router();
 
@@ -61,6 +62,12 @@ router.post('/streams/:streamId/gift', authMiddleware as any, giftController.sen
 // Streams
 router.get('/live/:category', authMiddleware as any, streamController.listByCategory);
 router.post('/streams', authMiddleware as any, streamController.create);
+
+// Categorias
+router.get('/streams/categories', authMiddleware as any, categoryController.list);
+router.post('/categories', authMiddleware as any, categoryController.create);
+router.put('/categories/:id', authMiddleware as any, categoryController.update);
+router.delete('/categories/:id', authMiddleware as any, categoryController.delete);
 
 // Notificações
 router.post('/notifications/test', authMiddleware as any, notificationController.sendTestNotification);

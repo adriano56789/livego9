@@ -47,7 +47,7 @@ export const config: Config = {
     backendUrl: process.env.BACKEND_URL || 'http://localhost:3000',
     
     // MongoDB Configuration
-    mongoUri: process.env.MONGODB_URI || 'mongodb://admin:adriano123@localhost:27017/livego?authSource=admin',
+    mongoUri: process.env.MONGODB_URI || 'mongodb://admin:adriano123@72.60.249.175:27017/livego?authSource=admin',
     mongoDbName: process.env.MONGODB_NAME || 'livego',
     
     // JWT Authentication

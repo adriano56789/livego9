@@ -433,3 +433,98 @@ export interface WithdrawalMethod {
     label: string;
     fields: { name: string; label: string; placeholder: string; required: boolean }[];
 }
+
+export interface StreamAnalytics {
+    streamId: string;
+    title: string;
+    startTime: Date;
+    endTime?: Date;
+    duration: number; // in seconds
+    peakViewers: number;
+    averageViewers: number;
+    uniqueViewers: number;
+    totalMessages: number;
+    totalGifts: number;
+    totalRevenue: number;
+    viewerRetention: Array<{ minute: number; percentage: number }>;
+    topChatters: Array<{ userId: string; username: string; messageCount: number }>;
+    topGifters: Array<{ userId: string; username: string; giftCount: number; totalValue: number }>;
+    viewerDemographics: {
+        countries: Array<{ code: string; name: string; count: number; percentage: number }>;
+        devices: Array<{ type: string; percentage: number }>;
+        ageGroups: Array<{ range: string; percentage: number }>;
+        genders: { [key: string]: number };
+    };
+    chatActivity: Array<{ timestamp: Date; messageCount: number }>;
+    revenueByTime: Array<{ timestamp: Date; amount: number }>;
+    newFollowers: number;
+    newSubscribers: number;
+    shares: number;
+    clipsCreated: number;
+    averageWatchTime: number; // in minutes
+    concurrentViewers: Array<{ timestamp: Date; count: number }>;
+    streamHealth: {
+        averageBitrate: number;
+        averageFps: number;
+        averageLatency: number;
+        bufferingEvents: number;
+    };
+    tags: string[];
+    category: string;
+}
+
+export interface StreamSession {
+    id: string;
+    streamerId: string;
+    title: string;
+    description?: string;
+    thumbnailUrl?: string;
+    startTime: Date;
+    endTime?: Date;
+    duration: number; // in seconds
+    status: 'scheduled' | 'live' | 'ended' | 'cancelled';
+    isPrivate: boolean;
+    tags: string[];
+    category: string;
+    viewerCount: number;
+    peakViewers: number;
+    totalViews: number;
+    totalMessages: number;
+    totalGifts: number;
+    totalRevenue: number;
+    streamUrl?: string;
+    playbackUrl?: string;
+    recordingUrl?: string;
+    scheduledStartTime?: Date;
+    scheduledEndTime?: Date;
+    isPinned: boolean;
+    isFeatured: boolean;
+    language?: string;
+    ageRestricted: boolean;
+    streamKey?: string;
+    streamServer?: string;
+    streamSettings: {
+        quality: 'auto' | '144p' | '240p' | '360p' | '480p' | '720p' | '1080p' | '1440p' | '2160p';
+        latency: 'ultra_low' | 'low' | 'normal' | 'high';
+        enableChat: boolean;
+        enableGifts: boolean;
+        enableDonations: boolean;
+        enableSubscriptions: boolean;
+        enableAds: boolean;
+        isAgeRestricted: boolean;
+    };
+    moderationSettings: {
+        blockLinks: boolean;
+        blockProfanity: boolean;
+        requireFollowerToChat: boolean;
+        slowMode: boolean;
+        slowModeInterval: number; // in seconds
+        subscriberOnlyMode: boolean;
+        followerOnlyMode: boolean;
+        emoteOnlyMode: boolean;
+        blockNewAccounts: boolean;
+        minAccountAge: number; // in days
+        minFollowerCount: number;
+    };
+    analytics?: StreamAnalytics;
+}

@@ -59,8 +59,8 @@ export const getApiDefinitions = (): Array<{ group: string, endpoints: EndpointD
             { method: 'GET', path: '/users/me/reminders', func: api.getReminders, params: [], collections: [] },
             { method: 'DELETE', path: '/users/me/reminders/:id', func: api.removeReminder, params: [{ name: 'id', default: 'rem-1' }], collections: [] },
             { method: 'POST', path: '/users/:userId/active-frame', func: api.setActiveFrame, params: [{ name: 'userId', default: 'me' }, { name: 'frameId', default: 'FrameBlueCrystal' }], buildPayload: (p) => ({ frameId: p.frameId }), collections: ['users'] },
-            { method: 'POST', path: '/users/me/billing-address', func: api.updateBillingAddress, params: [{ name: 'address', default: '{"street":"Test St", "number":"123"}' }], buildPayload: (p) => JSON.parse(p.address), collections: ['users'] },
-            { method: 'POST', path: '/users/me/credit-card', func: api.updateCreditCard, params: [{ name: 'card', default: '{"number":"4242424242424242"}' }], buildPayload: (p) => JSON.parse(p.card), collections: ['users'] }
+            { method: 'POST', path: '/users/me/billing-address', func: api.payment.updateBillingAddress, params: [{ name: 'address', default: '{"street":"Test St", "number":"123"}' }], buildPayload: (p) => JSON.parse(p.address), collections: ['users'] },
+            { method: 'POST', path: '/users/me/credit-card', func: api.payment.updateCreditCard, params: [{ name: 'card', default: '{"number":"4242424242424242"}' }], buildPayload: (p) => JSON.parse(p.card), collections: ['users'] }
         ]
     },
     {

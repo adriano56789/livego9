@@ -28,7 +28,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "backend/scripts/seedCategories.js"  ],
   "exclude": [
     "node_modules",
     "dist",

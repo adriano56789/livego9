@@ -8,7 +8,11 @@
     "start": "nodemon --exec node --loader ts-node/esm server.ts",
     "build": "tsc",
     "serve": "node --loader ts-node/esm server.ts",
-    "dev": "nodemon --exec node --loader ts-node/esm server.ts"
+    "dev": "nodemon --exec node --loader ts-node/esm server.ts",
+    "seed:categories": "node scripts/seedCategories.js",
+    "seed:users": "ts-node --esm scripts/seedRealUsers.ts",
+    "seed:conversations": "ts-node --esm scripts/seedConversations.ts",
+    "list:users": "ts-node --esm scripts/listUsers.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -22,6 +26,8 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/mongodb": "^4.0.6",
+    "@types/mongoose": "^5.11.96",
     "@types/node": "^20.19.27",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.2",
