@@ -8,7 +8,11 @@ interface EntryChatMessageProps {
     onClick: (user: User) => void;
     onFollow: (user: User) => void;
     isFollowed: boolean;
-    streamer: Streamer;
+    streamer: {
+        id: string;
+        name: string;
+        avatar: string;
+    };
 }
 
 const EntryChatMessage: React.FC<EntryChatMessageProps> = ({ user, onClick }) => {

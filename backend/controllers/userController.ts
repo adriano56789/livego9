@@ -95,5 +95,109 @@ export const userController = {
         } catch (err) {
              return sendError(res, "Erro ao registrar token FCM.");
         }
+    },
+
+    muteUser: async (req: AuthRequest, res: any) => {
+        try {
+            const { userId, reason, durationHours = 24 } = req.body;
+            
+            if (!userId) {
+                return sendError(res, "ID do usuário é obrigatório.", 400);
+            }
+
+            // Verificar se o usuário já está silenciado
+            const user = await UserModel.findOne({ id: req.userId });
+            if (!user) {
+                return sendError(res, "Usuário não encontrado.", 404);
+            }
+
+            const alreadyMuted = user.mutedUsers.some(mutedUser => 
+                mutedUser.userId === userId && mutedUser.mutedUntil > new Date()
+            );
+
+            if (alreadyMuted) {
+                return sendError(res, "Este usuário já está silenciado.", 400);
+            }
+
+            // Calcular a data de expiração do silêncio
+            const mutedUntil = new Date();
+            mutedUntil.setHours(mutedUntil.getHours() + durationHours);
+
+            // Adicionar à lista de usuários silenciados
+            await UserModel.findOneAndUpdate(
+                { id: req.userId },
+                { 
+                    $push: { 
+                        mutedUsers: { 
+                            userId,
+                            mutedUntil,
+                            reason: reason || ''
+                        } 
+                    } 
+                },
+                { new: true }
+            );
+
+            return sendSuccess(res, { mutedUntil }, "Usuário silenciado com sucesso.");
+        } catch (err) {
+            console.error("Erro ao silenciar usuário:", err);
+            return sendError(res, "Erro ao silenciar usuário.");
+        }
+    },
+
+    unmuteUser: async (req: AuthRequest, res: any) => {
+        try {
+            const { userId } = req.params;
+            
+            if (!userId) {
+                return sendError(res, "ID do usuário é obrigatório.", 400);
+            }
+
+            // Remover o usuário da lista de silenciados
+            const result = await UserModel.findOneAndUpdate(
+                { id: req.userId },
+                { 
+                    $pull: { 
+                        mutedUsers: { userId } 
+                    } 
+                },
+                { new: true }
+            );
+
+            if (!result) {
+                return sendError(res, "Usuário não encontrado.", 404);
+            }
+
+            return sendSuccess(res, null, "Usuário removido da lista de silenciados.");
+        } catch (err) {
+            console.error("Erro ao remover silêncio do usuário:", err);
+            return sendError(res, "Erro ao remover silêncio do usuário.");
+        }
+    },
+
+    getMutedUsers: async (req: AuthRequest, res: any) => {
+        try {
+            const user = await UserModel.findOne({ id: req.userId })
+                .select('mutedUsers')
+                .populate({
+                    path: 'mutedUsers.userId',
+                    select: 'id name avatarUrl',
+                    model: 'User'
+                });
+
+            if (!user) {
+                return sendError(res, "Usuário não encontrado.", 404);
+            }
+
+            // Filtrar apenas os silenciamentos ativos
+            const activeMutes = user.mutedUsers.filter(mutedUser => 
+                mutedUser.mutedUntil > new Date()
+            );
+
+            return sendSuccess(res, activeMutes);
+        } catch (err) {
+            console.error("Erro ao buscar usuários silenciados:", err);
+            return sendError(res, "Erro ao buscar usuários silenciados.");
+        }
     }
 };

@@ -183,5 +183,38 @@ export const chatController = {
             console.error('Erro ao buscar ranking:', err);
             return sendError(res, 'Erro ao buscar ranking', 500);
         }
+    },
+    
+    clearChat: async (req: any, res: any) => {
+        try {
+            const { roomId } = req.params;
+            const userId = req.userId;
+            
+            if (!roomId) {
+                return sendError(res, 'ID da sala é obrigatório', 400);
+            }
+            
+            // Verifica se a conversa existe e se o usuário é participante
+            const conversation = await ConversationModel.findOne({
+                _id: roomId,
+                participants: userId
+            });
+            
+            if (!conversation) {
+                return sendError(res, 'Conversa não encontrada ou acesso não autorizado', 404);
+            }
+            
+            // Atualiza a conversa para limpar as mensagens
+            conversation.messages = [];
+            conversation.lastMessage = "";
+            conversation.updatedAt = new Date();
+            
+            await conversation.save();
+            
+            return sendSuccess(res, { success: true, message: 'Chat limpo com sucesso' });
+        } catch (err) {
+            console.error('Erro ao limpar chat:', err);
+            return sendError(res, 'Erro ao limpar o chat', 500);
+        }
     }
 };

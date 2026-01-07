@@ -32,11 +32,17 @@ router.post('/users/me/billing-address', authMiddleware as any, userController.u
 router.post('/users/me/credit-card', authMiddleware as any, userController.updateCreditCard);
 router.post('/users/:userId/frame', authMiddleware as any, userController.follow); // Stub para equipar
 
+// Gerenciamento de usuários silenciados
+router.post('/users/mute', authMiddleware as any, userController.muteUser);
+router.delete('/users/mute/:userId', authMiddleware as any, userController.unmuteUser);
+router.get('/users/me/muted', authMiddleware as any, userController.getMutedUsers);
+
 // Chat
 router.get('/chats/conversations', authMiddleware as any, chatController.getConversations);
 router.post('/chats/start', authMiddleware as any, chatController.startChat);
 router.get('/chats/friends', authMiddleware as any, chatController.getFriends);
 router.post('/chats/stream/:roomId/message', authMiddleware as any, chatController.sendMessageToStream);
+router.delete('/chats/room/:roomId', authMiddleware as any, chatController.clearChat);
 router.get('/ranking/fans', authMiddleware as any, chatController.getRanking);
 
 // Carteira e Transações

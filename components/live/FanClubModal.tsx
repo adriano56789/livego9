@@ -155,7 +155,7 @@ const FanClubModal: React.FC<FanClubModalProps> = ({
                                  />
                                  <div className="flex flex-col">
                                      <span className="text-white font-bold text-[13px]">Ver membros do fã-clube</span>
-                                     <span className="text-gray-500 text-[10px] leading-tight">Toque para ver o ranking completo.</span>
+                                     <span className="text-gray-500 text-[10px] leading-tight">{streamer.fans.toLocaleString()} fãs • Toque para ver o ranking</span>
                                  </div>
                              </div>
                              <div className="flex items-center gap-1.5">

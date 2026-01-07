@@ -1,6 +1,15 @@
 
 import React from 'react';
 
+export interface GiftPayload {
+    id?: number;
+    fromUser: User;
+    toUser: { id: string; name: string };
+    gift: Gift;
+    quantity: number;
+    roomId: string;
+}
+
 export enum ToastType {
   Success = 'success',
   Error = 'error',

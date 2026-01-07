@@ -29,9 +29,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     fetchLastEmail();
   }, []);
 
+  // Função para validar o formato do e-mail
+  const validateEmail = (email: string): boolean => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!email || !password || loading) return;
+    
+    if (!validateEmail(email)) {
+      setStatusMessage({ text: 'Por favor, insira um e-mail válido.', type: 'error' });
+      return;
+    }
     
     setLoading(true);
     setStatusMessage({ text: '', type: '' });
@@ -52,6 +64,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !password || loading) return;
+    
+    if (!validateEmail(email)) {
+      setStatusMessage({ text: 'Por favor, insira um e-mail válido.', type: 'error' });
+      return;
+    }
 
     setLoading(true);
     setStatusMessage({ text: '', type: '' });
@@ -104,9 +121,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                         <input 
                             type="email" 
                             className="bg-transparent w-full text-white placeholder-gray-500 outline-none text-sm font-medium" 
-                            placeholder="E-mail de acesso" 
+                            placeholder="Seu e-mail" 
                             value={email} 
-                            onChange={e => setEmail(e.target.value)} 
+                            onChange={e => setEmail(e.target.value.trim())}
+                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                            title="Por favor, insira um endereço de e-mail válido"
                             required
                         />
                      </div>
@@ -131,9 +150,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                         <input 
                             type="email" 
                             className="bg-transparent w-full text-white placeholder-gray-500 outline-none text-sm font-medium" 
-                            placeholder="E-mail" 
+                            placeholder="Seu e-mail" 
                             value={email} 
-                            onChange={e => setEmail(e.target.value)} 
+                            onChange={e => setEmail(e.target.value.trim())}
+                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                            title="Por favor, insira um endereço de e-mail válido"
                             required
                         />
                      </div>

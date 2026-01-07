@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeftIcon, MoreIcon, SolidDiamondIcon, CheckIcon, PixIcon, MercadoPagoIcon, BankIcon, ChevronRightIcon, YellowDiamondIcon } from './icons';
 import { User, PurchaseRecord, ToastType } from '../types';
@@ -257,6 +258,7 @@ const WalletScreen: React.FC<WalletScreenProps> = ({ onClose, initialTab = 'Diam
                 packageDetails={selectedPackage}
                 onConfirm={handlePurchaseComplete}
                 onCancel={() => { setIsConfirmingPurchase(false); setSelectedPackage(null); }}
+                addToast={addToast}
             />
         );
     }

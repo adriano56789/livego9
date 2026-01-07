@@ -1,14 +1,25 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "rootDir": "..",
+    "target": "es2020",
+    "module": "commonjs",
     "outDir": "./dist",
+    "rootDir": "..",
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["./*"],
+      "../*": ["../*"]
+    },
+    "typeRoots": [
+      "./node_modules/@types",
+      "../node_modules/@types"
+    ],
+    "composite": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },
   "include": [
-    "./**/*.ts",
+    "**/*.ts",
     "../types.ts",
     "../constants.ts",
     "../components/**/*.ts",

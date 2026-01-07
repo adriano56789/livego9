@@ -18,6 +18,9 @@ interface ToolsModalProps {
     onOpenPrivateInviteModal: (e: any) => void;
     onOpenClarityPanel: (e: any) => void;
     onOpenRanking?: () => void;
+    onOpenFans?: (e: any) => void;
+    onOpenFriendRequests?: (e: any) => void;
+    onStartChatWithStreamer?: (user: any) => void;
     isModerationActive: boolean;
     onToggleModeration: (e: any) => void;
     isPrivateStream?: boolean;
@@ -52,7 +55,8 @@ const ToolsModal: React.FC<ToolsModalProps> = ({
     isMicrophoneMuted, onToggleMicrophone, isSoundMuted, onToggleSound,
     onOpenClarityPanel, onToggleModeration, isModerationActive,
     onOpenPrivateInviteModal, onStartPK, isPKBattleActive, onEndPKBattle, onToggleAutoFollow, isAutoFollowEnabled,
-    onToggleAutoPrivateInvite, isAutoPrivateInviteEnabled, onOpenPrivateChat, onOpenEditStreamInfo, onOpenRanking
+    onToggleAutoPrivateInvite, isAutoPrivateInviteEnabled, onOpenPrivateChat, onOpenEditStreamInfo, onOpenRanking, 
+    onOpenFans, onOpenFriendRequests = () => {}, onStartChatWithStreamer
 }) => {
     if (!isOpen) return null;
 
@@ -67,15 +71,48 @@ const ToolsModal: React.FC<ToolsModalProps> = ({
                 {/* Ferramentas de Interação */}
                 <div className="mb-6">
                     <h4 className="text-gray-500 text-xs font-medium mb-4 px-1">Interação</h4>
-                    <div className="grid grid-cols-4 gap-4">
-                        <ToolItem icon={UserIcon} label="Co-host" onClick={onOpenCoHostModal} defaultColor="bg-[#2C2C2E] text-white" />
+                    <div className="grid grid-cols-4 gap-4 w-full">
+                        <ToolItem 
+                            icon={TrophyIcon} 
+                            label="Ranking" 
+                            onClick={onOpenRanking} 
+                        />
+                        <ToolItem 
+                            icon={UserIcon} 
+                            label="Fãs" 
+                            onClick={onOpenFans}
+                            isActive={false}
+                        />
+                        <ToolItem 
+                            icon={MessageIcon} 
+                            label="Chat" 
+                            onClick={onOpenPrivateChat}
+                            isActive={false}
+                        />
                         {isPKBattleActive ? (
                             <ToolItem icon={BanIcon} label="Encerrar PK" onClick={onEndPKBattle} defaultColor="bg-red-500/20 text-red-500" />
                         ) : (
                             <ToolItem icon={TrophyIcon} label="Batalha" onClick={onStartPK} defaultColor="bg-[#2C2C2E] text-white" />
                         )}
-                        <ToolItem icon={UserPlusIcon} label="Convidar" onClick={onOpenPrivateInviteModal} defaultColor="bg-[#2C2C2E] text-white" />
-                        <ToolItem icon={MessageIcon} label="Chat" onClick={onOpenPrivateChat} hasDot defaultColor="bg-[#2C2C2E] text-white" />
+                        <ToolItem 
+                            icon={MessageIcon} 
+                            label="Chat com Streamer" 
+                            onClick={onStartChatWithStreamer}
+                            defaultColor="bg-[#2C2C2E] text-white"
+                        />
+                        <ToolItem 
+                            icon={UserPlusIcon} 
+                            label="Convidar" 
+                            onClick={onOpenPrivateInviteModal} 
+                            defaultColor="bg-[#2C2C2E] text-white" 
+                        />
+                        <ToolItem 
+                            icon={UserIcon} 
+                            label="Solicitações" 
+                            onClick={onOpenFriendRequests}
+                            defaultColor="bg-[#2C2C2E] text-white"
+                            hasDot={true}
+                        />
                     </div>
                 </div>
 

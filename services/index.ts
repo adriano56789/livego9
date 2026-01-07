@@ -7,6 +7,7 @@ export * from './database';
 export * from './db_shared';
 export * from './healthMonitor';
 export * from './integrityScanner';
+export * from './mercadopago';
 export * from './mockData';
 export * from './mockServer';
 export * from './websocket';

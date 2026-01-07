@@ -1,9 +1,9 @@
 import { API_CONFIG } from './config';
 import { User, Streamer, Gift, Conversation, RankedUser, MusicTrack, PurchaseRecord, Obra, ConnectedAccount, FeedPhoto } from '../types';
-import { webSocketManager } from './websocket';
-import { GIFTS } from '../constants';
 import { GiftPayload } from '../components/live/GiftAnimationOverlay';
+import { GIFTS } from '../constants';
 import { apiTrackerService } from './apiTrackerService';
+import { webSocketManager } from './websocket';
 
 // API Settings
 const TOKEN_KEY = '@LiveGo:token';
@@ -171,6 +171,7 @@ export const api = {
         listConversations: (): Promise<Conversation[]> => request('GET', '/chats/conversations'),
         start: (userId: string) => request('POST', '/chats/start', { userId }),
         sendMessage: (roomId: string, message: any) => request('POST', `/chats/stream/${roomId}/message`, message),
+        clearChat: (roomId: string): Promise<{ success: boolean; message: string }> => request('DELETE', `/chats/room/${roomId}`),
     },
     gifts: {
         list: (category?: string): Promise<Gift[]> => request('GET', `/gifts?category=${category || 'Popular'}`),
@@ -220,7 +221,7 @@ export const api = {
     getFeedVideos: (): Promise<FeedPhoto[]> => request('GET', '/feed/videos'),
     likePost: (postId: string): Promise<{ success: boolean }> => request('POST', `/posts/${postId}/like`),
     addComment: (postId: string, text: string): Promise<{ success: boolean; comment: any }> => request('POST', `/posts/${postId}/comment`, { text }),
-    sendGift: (from: string, streamId: string, giftName: string, count: number, targetId?: string): Promise<{ success: boolean; updatedSender: User, leveledUp: boolean }> => {
+    sendGift: (from: string, streamId: string, giftName: string, count: number, targetId?: string): Promise<{ success: boolean; updatedSender: User, leveledUp: boolean, giftPayload?: GiftPayload }> => {
         return request('POST', `/gift`, { from, streamId, giftName, count, targetId });
     },
     
@@ -251,8 +252,16 @@ export const api = {
     createFeedPost: (data: any): Promise<{ success: boolean; user: User }> => request('POST', '/posts', data),
     confirmPurchaseTransaction: (details: any, method: string): Promise<any> => request('POST', '/wallet/confirm-purchase', { details, method }),
     cancelPurchaseTransaction() {
-        return request('POST', '/wallet/cancel-purchase');
+        return Promise.resolve({ success: true });
     },
+
+    // Constantes
+    constants: {
+        GIFTS
+    },
+
+    // WebSocket Manager
+    webSocketManager,
 
     // User Action Modal
     userActions: {
@@ -269,6 +278,12 @@ export const api = {
             return request('POST', `/streams/${streamId}/kick`, { userId });
         }
     },
-    updateBillingAddress: (address: any) => request('POST', '/users/me/billing-address', address),
-    updateCreditCard: (card: any) => request('POST', '/users/me/credit-card', card),
+    payment: {
+        updateBillingAddress(address: any) {
+            return request('POST', '/users/me/billing-address', address);
+        },
+        updateCreditCard(card: any) {
+            return request('POST', '/users/me/credit-card', card);
+        }
+    },
 };
